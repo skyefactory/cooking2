@@ -1,0 +1,242 @@
+[gd_scene format=3 uid="uid://b0rjp2t4waivg"]
+
+[ext_resource type="Script" uid="uid://bxolka0f5qkm8" path="res://scripts/player_spawner.gd" id="1_3gp36"]
+[ext_resource type="PackedScene" uid="uid://dag6n7bosrup8" path="res://scenes/player.tscn" id="2_bu42p"]
+[ext_resource type="Script" uid="uid://bj7dux8i6ilin" path="res://scenes/ui.gd" id="4_ilyw4"]
+[ext_resource type="Material" uid="uid://djpkw62rkyxn2" path="res://mats/test.tres" id="4_jemfn"]
+[ext_resource type="Script" uid="uid://dfntagipgwmi0" path="res://scripts/WorldItem/world_item.gd" id="4_s5v2q"]
+[ext_resource type="FontFile" uid="uid://xhyumybloes1" path="res://fonts/Oxanium/static/Oxanium-ExtraBold.ttf" id="6_jemfn"]
+
+[sub_resource type="Gradient" id="Gradient_ilyw4"]
+offsets = PackedFloat32Array(0.13011153, 0.929368)
+colors = PackedColorArray(0.74978, 0.74978, 0.74977994, 1, 9.62615e-08, 0.7151385, 0.7189938, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ilyw4"]
+seed = 2348274
+frequency = 0.0215
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jemfn"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_ilyw4")
+color_ramp = SubResource("Gradient_ilyw4")
+seamless = true
+bump_strength = 16.0
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_v7ocj"]
+panorama = SubResource("NoiseTexture2D_jemfn")
+
+[sub_resource type="Sky" id="Sky_jemfn"]
+sky_material = SubResource("PanoramaSkyMaterial_v7ocj")
+
+[sub_resource type="Environment" id="Environment_v7ocj"]
+background_mode = 2
+sky = SubResource("Sky_jemfn")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_s5v2q"]
+size = Vector3(50, 1, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ilyw4"]
+albedo_color = Color(0.32321745, 0.57170653, 0.2719366, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jemfn"]
+size = Vector3(50, 1.0849609, 50)
+
+[sub_resource type="SphereMesh" id="SphereMesh_ilyw4"]
+material = ExtResource("4_jemfn")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_jemfn"]
+
+[node name="Gamer" type="Node3D" unique_id=405284247]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=453330040]
+environment = SubResource("Environment_v7ocj")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1892204777]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+light_energy = 0.8
+shadow_enabled = true
+
+[node name="Level" type="StaticBody3D" parent="." unique_id=459088987]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level" unique_id=935029717]
+mesh = SubResource("BoxMesh_s5v2q")
+surface_material_override/0 = SubResource("StandardMaterial3D_ilyw4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level" unique_id=1371508722]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04248047, 0)
+shape = SubResource("BoxShape3D_jemfn")
+
+[node name="PlayerSpawner" type="Node" parent="." unique_id=952340120 node_paths=PackedStringArray("spawn_points")]
+script = ExtResource("1_3gp36")
+player_scene = ExtResource("2_bu42p")
+spawn_points = [NodePath("../Spawnpoints/Spawnpoint1"), NodePath("../Spawnpoints/Spawnpoint2"), NodePath("../Spawnpoints/Spawnpoint3"), NodePath("../Spawnpoints/Spawnpoint4"), NodePath("../Spawnpoints/Spawnpoint5")]
+metadata/_custom_type_script = "uid://bxolka0f5qkm8"
+
+[node name="Spawnpoints" type="Node3D" parent="." unique_id=952530597]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0473592, -21.32375)
+
+[node name="Spawnpoint1" type="Node3D" parent="Spawnpoints" unique_id=1480246923]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3179328, 0, 0)
+
+[node name="Spawnpoint2" type="Node3D" parent="Spawnpoints" unique_id=1400368698]
+
+[node name="Spawnpoint3" type="Node3D" parent="Spawnpoints" unique_id=1254508442]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7089732, 0, 0)
+
+[node name="Spawnpoint4" type="Node3D" parent="Spawnpoints" unique_id=1496197470]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7141488, 0, 0)
+
+[node name="Spawnpoint5" type="Node3D" parent="Spawnpoints" unique_id=231261226]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.387509, 0, 0)
+
+[node name="WorldItem" type="RigidBody3D" parent="." unique_id=715344303 node_paths=PackedStringArray("mesh_instance")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0860467, 0)
+collision_layer = 5
+script = ExtResource("4_s5v2q")
+id = 0
+mesh_instance = NodePath("MeshInstance3D")
+metadata/_custom_type_script = "uid://dfntagipgwmi0"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WorldItem" unique_id=822034640]
+mesh = SubResource("SphereMesh_ilyw4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldItem" unique_id=172134086]
+shape = SubResource("SphereShape3D_jemfn")
+
+[node name="UI" type="Control" parent="." unique_id=2105116814]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_ilyw4")
+
+[node name="Menu" type="ColorRect" parent="UI" unique_id=1737573103]
+process_mode = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 790.0
+offset_top = 320.0
+offset_right = 1090.0
+offset_bottom = 720.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0.84313726, 1, 0.47058824)
+
+[node name="Label" type="Label" parent="UI/Menu" unique_id=2069562995]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -43.0
+offset_top = 7.0
+offset_right = 43.0
+offset_bottom = 40.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("6_jemfn")
+theme_override_font_sizes/font_size = 32
+text = "Menu"
+horizontal_alignment = 1
+
+[node name="ManagePlayersBtn" type="Button" parent="UI/Menu" unique_id=605741396]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -65.0
+offset_top = -112.0
+offset_right = 65.0
+offset_bottom = -81.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Manage Players"
+
+[node name="DisconnectBtn" type="Button" parent="UI/Menu" unique_id=100081620]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -47.5
+offset_right = 64.0
+offset_bottom = -16.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Disconnect"
+
+[node name="SettingsBtn" type="Button" parent="UI/Menu" unique_id=1805142163]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = 17.0
+offset_right = 64.0
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Settings"
+
+[node name="ResumeBtn" type="Button" parent="UI/Menu" unique_id=67681245]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = 80.5
+offset_right = 64.0
+offset_bottom = 111.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Resume"
+
+[node name="ItemInViewLbl" type="Label" parent="UI" unique_id=123562384]
+layout_mode = 0
+offset_right = 105.0
+offset_bottom = 23.0
+text = "Item In View: "
+
+[node name="InteractionLabel" type="Label" parent="UI" unique_id=1113462293]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 829.0
+offset_top = 508.5
+offset_right = 1051.0
+offset_bottom = 531.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Press E to pickup World Item"
+
+[node name="ColorRect" type="ColorRect" parent="UI" unique_id=458350539]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 937.5
+offset_top = 517.5
+offset_right = 942.5
+offset_bottom = 522.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

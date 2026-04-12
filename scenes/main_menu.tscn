@@ -1,0 +1,76 @@
+[gd_scene format=3 uid="uid://7rliq6w0ntvb"]
+
+[ext_resource type="Texture2D" uid="uid://odq2y2a7qoy1" path="res://textures/main_menu_placeholder.png" id="1_l6cm7"]
+[ext_resource type="Script" uid="uid://b42bj0qlu414x" path="res://scenes/main_menu.gd" id="1_wu84c"]
+[ext_resource type="PackedScene" uid="uid://c4e7rpqo8iv2n" path="res://scenes/lobby.tscn" id="2_8ln24"]
+[ext_resource type="FontFile" uid="uid://0nb1xe4xkhl3" path="res://fonts/Shadows_Into_Light/ShadowsIntoLight-Regular.ttf" id="2_bqqt6"]
+[ext_resource type="Texture2D" uid="uid://dedvc3e28ge7p" path="res://textures/button_menu_placeholder.png" id="2_ekxnf"]
+[ext_resource type="PackedScene" uid="uid://b0rjp2t4waivg" path="res://scenes/gamer.tscn" id="3_rtw2f"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ekxnf"]
+texture = ExtResource("2_ekxnf")
+
+[node name="Main Menu" type="Control" unique_id=278115151]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wu84c")
+lobby_scene = ExtResource("2_8ln24")
+game_scene = ExtResource("3_rtw2f")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=25856395]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("1_l6cm7")
+
+[node name="SingleplayerBtn" type="Button" parent="." unique_id=1701008838]
+layout_mode = 0
+offset_left = 170.0
+offset_top = 174.0
+offset_right = 370.0
+offset_bottom = 254.0
+theme_override_fonts/font = ExtResource("2_bqqt6")
+theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = SubResource("StyleBoxTexture_ekxnf")
+text = "  SINGLEPLAYER"
+alignment = 0
+
+[node name="MultiplayerBtn" type="Button" parent="." unique_id=134538636]
+layout_mode = 0
+offset_left = 170.0
+offset_top = 394.0
+offset_right = 370.0
+offset_bottom = 474.0
+theme_override_fonts/font = ExtResource("2_bqqt6")
+theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = SubResource("StyleBoxTexture_ekxnf")
+text = "  MULTIPLAYER"
+alignment = 0
+
+[node name="SettingsBtn" type="Button" parent="." unique_id=805749424]
+layout_mode = 0
+offset_left = 170.0
+offset_top = 614.0
+offset_right = 370.0
+offset_bottom = 694.0
+theme_override_fonts/font = ExtResource("2_bqqt6")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxTexture_ekxnf")
+text = "  SETTINGS"
+alignment = 0
+
+[node name="QuitBtn" type="Button" parent="." unique_id=1395782016]
+layout_mode = 0
+offset_left = 170.0
+offset_top = 844.0
+offset_right = 370.0
+offset_bottom = 924.0
+theme_override_fonts/font = ExtResource("2_bqqt6")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxTexture_ekxnf")
+text = "  QUIT"
+alignment = 0

@@ -1,0 +1,193 @@
+[gd_scene format=3 uid="uid://c4e7rpqo8iv2n"]
+
+[ext_resource type="Script" uid="uid://cgj7mgg28xqhj" path="res://scripts/lobby.gd" id="1_o1atq"]
+[ext_resource type="Texture2D" uid="uid://bw84x4uws7dic" path="res://textures/lobby_menu_placeholder.png" id="2_nqcc7"]
+[ext_resource type="Texture2D" uid="uid://cufh0q8wik0g" path="res://textures/menu_placeholder_blank.png" id="3_apkv3"]
+[ext_resource type="FontFile" uid="uid://0nb1xe4xkhl3" path="res://fonts/Shadows_Into_Light/ShadowsIntoLight-Regular.ttf" id="3_pc087"]
+[ext_resource type="Texture2D" uid="uid://dedvc3e28ge7p" path="res://textures/button_menu_placeholder.png" id="4_apkv3"]
+[ext_resource type="FontFile" uid="uid://xhyumybloes1" path="res://fonts/Oxanium/static/Oxanium-ExtraBold.ttf" id="4_omrgh"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_omrgh"]
+texture = ExtResource("4_apkv3")
+
+[node name="Lobby" type="Control" unique_id=2120407022]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_o1atq")
+metadata/_custom_type_script = "uid://cgj7mgg28xqhj"
+
+[node name="BG1" type="TextureRect" parent="." unique_id=997351465]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_nqcc7")
+
+[node name="BG2" type="TextureRect" parent="." unique_id=2079839714]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("3_apkv3")
+
+[node name="PortInput" type="LineEdit" parent="." unique_id=1591710762]
+layout_mode = 0
+offset_left = 850.0
+offset_top = 479.0
+offset_right = 1050.0
+offset_bottom = 511.0
+text = "42069"
+placeholder_text = "Enter Port"
+alignment = 1
+
+[node name="IPInput" type="LineEdit" parent="." unique_id=2073048817]
+layout_mode = 0
+offset_left = 850.0
+offset_top = 435.0
+offset_right = 1050.0
+offset_bottom = 467.0
+placeholder_text = "Enter IP"
+alignment = 1
+
+[node name="ClientList" type="ItemList" parent="." unique_id=1443849107]
+custom_minimum_size = Vector2(500, 500)
+layout_mode = 0
+offset_left = 1360.0
+offset_top = 158.0
+offset_right = 1860.0
+offset_bottom = 658.0
+
+[node name="ClientListLbl" type="Label" parent="." unique_id=1216377704]
+layout_mode = 0
+offset_left = 1360.0
+offset_top = 124.0
+offset_right = 1469.0
+offset_bottom = 157.0
+theme_override_fonts/font = ExtResource("4_omrgh")
+theme_override_font_sizes/font_size = 32
+text = "Clients"
+
+[node name="ClientAmtLbl" type="Label" parent="." unique_id=1380760814]
+layout_mode = 0
+offset_left = 1491.0
+offset_top = 124.0
+offset_right = 1544.0
+offset_bottom = 157.0
+theme_override_fonts/font = ExtResource("4_omrgh")
+theme_override_font_sizes/font_size = 32
+text = "0"
+
+[node name="ConnectingLbl" type="Label" parent="." unique_id=376920741]
+layout_mode = 0
+offset_left = 853.0
+offset_top = 435.0
+offset_right = 1059.0
+offset_bottom = 513.0
+theme_override_fonts/font = ExtResource("3_pc087")
+theme_override_font_sizes/font_size = 48
+text = "Connecting..."
+
+[node name="StatusLbl" type="Label" parent="." unique_id=562550916]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "PLACEHOLDER"
+
+[node name="HostBtn" type="Button" parent="." unique_id=1942476503]
+layout_mode = 0
+offset_left = 165.0
+offset_top = 317.0
+offset_right = 365.0
+offset_bottom = 397.0
+theme_override_fonts/font = ExtResource("3_pc087")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxTexture_omrgh")
+text = " HOST"
+alignment = 0
+
+[node name="SubmitIPPortBtn" type="Button" parent="." unique_id=754298339]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 851.0
+offset_top = 536.0
+offset_right = 1051.0
+offset_bottom = 616.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_pc087")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxTexture_omrgh")
+text = " SUBMIT"
+alignment = 0
+
+[node name="SubmitPortBtn" type="Button" parent="." unique_id=1379426444]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 851.0
+offset_top = 536.0
+offset_right = 1051.0
+offset_bottom = 616.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_pc087")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxTexture_omrgh")
+text = " SUBMIT"
+alignment = 0
+
+[node name="ResetBtn" type="Button" parent="." unique_id=117892896]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 851.0
+offset_top = 536.0
+offset_right = 1051.0
+offset_bottom = 616.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_pc087")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxTexture_omrgh")
+text = " RESET"
+alignment = 0
+
+[node name="StartBtn" type="Button" parent="." unique_id=1274708032]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 1657.0
+offset_top = 73.0
+offset_right = 1857.0
+offset_bottom = 153.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_pc087")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxTexture_omrgh")
+text = " START"
+alignment = 0
+
+[node name="JoinBtn" type="Button" parent="." unique_id=506303274]
+layout_mode = 0
+offset_left = 165.0
+offset_top = 539.0
+offset_right = 365.0
+offset_bottom = 619.0
+theme_override_fonts/font = ExtResource("3_pc087")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxTexture_omrgh")
+text = " JOIN"
+alignment = 0

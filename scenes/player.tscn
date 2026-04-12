@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://dag6n7bosrup8"]
+
+[ext_resource type="Script" uid="uid://djrp5qh2elsys" path="res://scripts/player.gd" id="1_4flbx"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_onrkg"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("Arm:visible")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("Arm:position")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("Arm:rotation")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+
+[sub_resource type="BoxMesh" id="BoxMesh_g2els"]
+size = Vector3(0.15, 0.15, 1.25)
+
+[sub_resource type="TorusMesh" id="TorusMesh_g2els"]
+inner_radius = 0.27
+outer_radius = 0.363
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qhqgy"]
+albedo_color = Color(1, 1, 0, 1)
+emission_enabled = true
+emission = Color(1, 0.95686275, 0.12941177, 1)
+emission_energy_multiplier = 5.0
+rim_enabled = true
+clearcoat_enabled = true
+subsurf_scatter_enabled = true
+backlight_enabled = true
+backlight = Color(1, 0.95686275, 0.12941177, 1)
+refraction_enabled = true
+detail_enabled = true
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3vyb7"]
+radius = 0.6
+height = 3.0
+
+[node name="Player" type="CharacterBody3D" unique_id=39259922]
+script = ExtResource("1_4flbx")
+run_multiplier = 1.2000000000000002
+metadata/_custom_type_script = "uid://djrp5qh2elsys"
+metadata/ID = 0
+
+[node name="Camera" type="Camera3D" parent="." unique_id=759072524]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0.6228777, 2.2534502, 0)
+current = true
+fov = 90.0
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=943052735]
+replication_config = SubResource("SceneReplicationConfig_onrkg")
+
+[node name="Arm" type="Node3D" parent="." unique_id=852370454]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0.30534643, 1.8000387, 0.45250845)
+
+[node name="HeldItemSocket" type="Node3D" parent="Arm" unique_id=1164418475]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24416685, 0.017921925, -1.3410916)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arm" unique_id=1180694362]
+transform = Transform3D(0.9848077, 0, -0.17364815, 0, 1, 0, 0.17364815, 0, 0.9848077, 0.09711945, -0.0008364916, -0.5689776)
+mesh = SubResource("BoxMesh_g2els")
+
+[node name="Halo" type="MeshInstance3D" parent="." unique_id=1866506294]
+transform = Transform3D(1, 0, 0, 0, 0.7469573, 0, 0, 0, 1, 0, 3.1854613, 0)
+mesh = SubResource("TorusMesh_g2els")
+surface_material_override/0 = SubResource("StandardMaterial3D_qhqgy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2115811733]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("CapsuleShape3D_3vyb7")
