@@ -7,7 +7,7 @@ class_name PlayerSpawner extends Node
 var used_models: Array[PackedScene] = [] # models that have been used, to ensure each player gets a different model.
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	if Network.is_server:
+	if Network.is_server: # if we are the server, we need to spawn a player for ourselves and for each client that is already connected.
 		rpc("spawn_player", multiplayer.get_unique_id(), 0)
 		var i = 1
 		for id in multiplayer.get_peers():
@@ -18,15 +18,16 @@ func _ready() -> void:
 	elif !Network.is_server and !Network.is_singleplayer:
 		multiplayer.server_disconnected.connect(_on_disconnected_from_server)
 	
-	if Network.is_singleplayer:
+	if Network.is_singleplayer: # if we are in singleplayer mode, we just spawn a single player for the local user.
 		spawn_singleplayer_player()
 	
+	# called when a client disconnects from the server
 func _on_disconnected_from_server() -> void:
 	print("Disconnected from server.")
 	get_tree().change_scene_to_packed(menu_scene)
 
 @rpc("authority", "call_local", "reliable")
-func spawn_player(id: int, spawn_point: int) -> void:
+func spawn_player(id: int, spawn_point: int) -> void: # spawns a player with the given ID at the given spawn point. The server calls this function on all clients when a new player joins, and also calls it for itself when the game starts.
 	if spawn_point < 0 or spawn_point >= spawn_points.size():
 		push_warning("Invalid spawn point %d for player %d" % [spawn_point, id])
 		return

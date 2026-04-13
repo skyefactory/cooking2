@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dag6n7bosrup8"]
 
-[ext_resource type="Script" uid="uid://djrp5qh2elsys" path="res://scripts/player.gd" id="1_4flbx"]
+[ext_resource type="Script" uid="uid://djrp5qh2elsys" path="res://scripts/Player/player.gd" id="1_4flbx"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_onrkg"]
 properties/0/path = NodePath(".:position")
@@ -50,7 +50,7 @@ metadata/_custom_type_script = "uid://djrp5qh2elsys"
 metadata/ID = 0
 
 [node name="Camera" type="Camera3D" parent="." unique_id=759072524]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0.6228777, 2.2534502, 0)
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0.6228777, 2.453728, 0)
 current = true
 fov = 90.0
 

@@ -12,27 +12,29 @@ const MAX_COOK_AMOUNT: float = 200.0
 var material: ShaderMaterial = null
 var pickup_allowd: bool = true
 
+# try and find the mesh's material
 func resolve_material() -> void:
-	if not mesh_instance:
+	if not mesh_instance: # try to find the mesh if it wasnt manually assigned
 		mesh_instance = get_node_or_null("MeshInstance3D")
 
-	if not mesh_instance:
+	if not mesh_instance: # if there is no mesh, theres no material.
 		material = null
+		push_error("WorldItem has no MeshInstance3D: %s" % get_path())
 		return
 
-	var active_material: Material = mesh_instance.get_active_material(0)
-	if active_material is ShaderMaterial:
-		var override_material: Material = mesh_instance.get_surface_override_material(0)
-		if override_material == null:
-			# Use a unique runtime material so this item's values do not get lost on shared resources.
-			var unique_material := (active_material as ShaderMaterial).duplicate() as ShaderMaterial
-			mesh_instance.set_surface_override_material(0, unique_material)
-			material = unique_material
+	var active_material: Material = mesh_instance.get_active_material(0) # get the active material
+	if active_material is ShaderMaterial: # is the material a shader material?
+		var override_material: Material = mesh_instance.get_surface_override_material(0) # check if we have an override
+		if override_material == null: # no override
+			var unique_material := (active_material as ShaderMaterial).duplicate() as ShaderMaterial  # duplicate the material.
+			mesh_instance.set_surface_override_material(0, unique_material) # set it as the override so other items with the same material don't get affected
+			material = unique_material # use the unique material for this item
 		else:
-			material = override_material as ShaderMaterial
+			material = override_material as ShaderMaterial # we have an override, use it.
 	else:
-		material = null
+		material = null # if the active material isnt a shader material, we cant use it.
 
+# pass the current cook vars to the shader.
 func sync_shader_values() -> void:
 	if not material:
 		return

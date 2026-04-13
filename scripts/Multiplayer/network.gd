@@ -7,9 +7,9 @@ signal server_disconnected
 signal peer_connected(peer_id: int)
 signal peer_disconnected(peer_id: int)
 
-const MAX_PEERS: int = 5
+const MAX_PEERS: int = 5 # max number of clients that can connect to the server (including the host)
 
-var is_singleplayer: bool = false
+var is_singleplayer: bool = false # is this a singleplayer session?
 
 # the peer of this instance.
 var peer: ENetMultiplayerPeer = null
@@ -29,11 +29,13 @@ func reset() -> void:
 	reject_new_clients = false
 	multiplayer.multiplayer_peer = null
 
+# forcibly disconnect a client from the server. Only the server can call this function.
 func disconnect_client(peer_id: int, force: bool = true) -> void:
 	if not is_server or peer == null:
 		return
 	peer.disconnect_peer(peer_id, force)
 
+# change whether the server will reject new clients. Disconnects existing clients if disconnect_existing is true.
 func set_reject_new_clients(reject: bool, disconnect_existing: bool = false) -> void:
 	if not is_server or peer == null:
 		return
@@ -135,6 +137,7 @@ func load_game_scene() -> void:
 	if current_scene:
 		current_scene.queue_free()
 
+# find a player node by peer ID
 func _find_player_by_id(player_id: int) -> Player:
 	var scene := get_tree().current_scene
 	if scene == null:
@@ -144,6 +147,7 @@ func _find_player_by_id(player_id: int) -> Player:
 			return node
 	return null
 
+# find a world item by its path.
 func _find_world_item(item_path: NodePath) -> WorldItem:
 	var item_node := get_node_or_null(item_path)
 	if item_node is WorldItem:
@@ -163,71 +167,76 @@ func _find_world_item(item_path: NodePath) -> WorldItem:
 
 	return null
 
+#clients call this to request picking up an item.
 func request_pickup(item_path: NodePath) -> void:
-	if multiplayer.is_server():
+	if multiplayer.is_server(): # are we the server? if so, we can directly pickup the item without an RPC.
 		pickup_item(item_path)
 	else:
-		rpc_id(1, "pickup_item", item_path)
+		rpc_id(1, "pickup_item", item_path) # we are not the server, send a request to the server to pickup the item.
 
 @rpc("any_peer", "reliable")
-func pickup_item(itemPath: NodePath):
-	if is_server:
-		var player_id = multiplayer.get_remote_sender_id()
-		if player_id == 0:
+func pickup_item(itemPath: NodePath): # verifies that the pickup request is valid and then calls apply_pickup if it is.
+	if is_server: # are we the server
+		var player_id = multiplayer.get_remote_sender_id() # get the ID of the client
+		if player_id == 0: # if the player ID is 0, it means the server itself sent the request, so we use the server's unique ID instead.
 			player_id = multiplayer.get_unique_id()
-		var item = _find_world_item(itemPath)
-		var player = _find_player_by_id(player_id)
+		var item = _find_world_item(itemPath) # find the item being requested to pickup
+		var player = _find_player_by_id(player_id) # find the player requesting the pickup
+		 # verify that the item and player are valid, that the player is not already holding an item, and that the item can be interacted with by the player.
 		if item and is_instance_valid(item) and player and player.held_item == null and Interactable.can_interact(item, player):
 			rpc("apply_pickup", item.get_path(), player_id)
 
 @rpc("authority", "call_local", "reliable")
-func apply_pickup(itemPath: NodePath, playerId: int):
-	var item = _find_world_item(itemPath)
-	var player = _find_player_by_id(playerId)
-	if item == null or not is_instance_valid(item):
+func apply_pickup(itemPath: NodePath, playerId: int): #applies the pickup on all clients.
+	var item = _find_world_item(itemPath) # find the item being picked up
+	var player = _find_player_by_id(playerId) # find the player picking up the item
+	if item == null or not is_instance_valid(item): # if the item is not valid, we cant pickup, so we just return
 		return
-	if player == null:
+	if player == null: # if the player is not valid, we cant pickup, so we just return
 		return
 	item.freeze = true #prevent physics from acting on the item
 	# disable collisions
-	item.get_node("CollisionShape3D").disabled = true
-	item.reparent(player.held_item_socket)
-	item.global_transform = player.held_item_socket.global_transform
-	player.held_item = item
-	item.pickup_allowd = false
+	item.get_node("CollisionShape3D").disabled = true # disable the collisions
+	item.reparent(player.held_item_socket) # reparent the item to the player's held item socket so that it moves with the player
+	item.global_transform = player.held_item_socket.global_transform # set the item's position and rotation to match the held item socket
+	player.held_item = item # set the player's held item to this item
+	item.pickup_allowd = false # set pickup allowed to false to prevent other players from picking up the item while its being held.
 
-func request_drop() -> void:
-	if multiplayer.is_server():
+func request_drop() -> void: # clients call this to request dropping the currently held item.
+	if multiplayer.is_server(): # are we the server? if so, we can directly drop the item without an RPC.
 		drop_item()
 	else:
-		rpc_id(1, "drop_item")
+		rpc_id(1, "drop_item") # we are not the server, send a request to the server to drop the currently held item.
 
 @rpc("any_peer", "reliable")
-func drop_item():
-	if is_server:
-		var player_id = multiplayer.get_remote_sender_id()
+func drop_item(): # verifies that the drop request is valid and then calls apply_drop if it is.
+	if is_server: # are we the server
+		var player_id = multiplayer.get_remote_sender_id() # get the ID of the client
+		 # if the player ID is 0, it means the server itself sent the request, so we use the server's unique ID instead.
 		if player_id == 0:
 			player_id = multiplayer.get_unique_id()
-		var player = _find_player_by_id(player_id)
-		if player and player.held_item:
+		var player = _find_player_by_id(player_id) # find the player requesting the drop
+		if player and player.held_item: # verify that the player is valid and is holding an item
 			rpc("apply_drop", player_id)
 
-@rpc("authority", "call_local", "reliable")
-func apply_drop(playerId: int):
-	var player = _find_player_by_id(playerId)
+@rpc("authority", "call_local", "reliable") 
+func apply_drop(playerId: int): # applies the drop on all clients.
+	var player = _find_player_by_id(playerId) # find the player dropping the item
 	if player == null:
 		return
-	if player.held_item and is_instance_valid(player.held_item):
-		player.held_item.freeze = false
+	if player.held_item and is_instance_valid(player.held_item): # verify that the player is holding an item and that the item is valid
+		player.held_item.freeze = false # unfreeze the item so that physics can act on it again
+		 # reparent the item to the scene root so that it is no longer a child of the player
 		var scene := get_tree().current_scene
 		if scene:
 			player.held_item.reparent(scene)
-		player.held_item.global_transform = player.held_item_socket.global_transform
-		player.held_item.pickup_allowd = true
+		player.held_item.global_transform = player.held_item_socket.global_transform 
+		player.held_item.pickup_allowd = true # set pickup allowed to true so that other players can pick up the item again
+		 # re-enable collisions
 		player.held_item.get_node("CollisionShape3D").disabled = false
-		player.held_item = null
+		player.held_item = null # set the player's held item to null to indicate that they are no longer holding anything.
 
-
+# this function can be called to disconnect from the server and return to the main menu. .
 func disconnect_from_server() -> void:
 	if peer:
 		peer.close()
