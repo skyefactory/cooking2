@@ -201,7 +201,7 @@ func apply_pickup(itemPath: NodePath, playerId: int): #applies the pickup on all
 	item.global_transform = player.held_item_socket.global_transform # set the item's position and rotation to match the held item socket
 	player.held_item = item # set the player's held item to this item
 	item.pickup_allowd = false # set pickup allowed to false to prevent other players from picking up the item while its being held.
-
+	item.held_by = player # set the held_by property of the item to the player holding it, so that we can check this when combining items.
 func request_drop() -> void: # clients call this to request dropping the currently held item.
 	if multiplayer.is_server(): # are we the server? if so, we can directly drop the item without an RPC.
 		drop_item()
@@ -234,7 +234,9 @@ func apply_drop(playerId: int): # applies the drop on all clients.
 		player.held_item.pickup_allowd = true # set pickup allowed to true so that other players can pick up the item again
 		 # re-enable collisions
 		player.held_item.get_node("CollisionShape3D").disabled = false
+		player.held_item.held_by = null # set the held_by property of the item to null since it is no longer being held.	
 		player.held_item = null # set the player's held item to null to indicate that they are no longer holding anything.
+
 
 # this function can be called to disconnect from the server and return to the main menu. .
 func disconnect_from_server() -> void:

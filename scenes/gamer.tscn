@@ -4,9 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://dag6n7bosrup8" path="res://scenes/player.tscn" id="2_bu42p"]
 [ext_resource type="PackedScene" uid="uid://do3vjnoqtj1w0" path="res://models/player1.blend" id="3_vkymv"]
 [ext_resource type="Script" uid="uid://bj7dux8i6ilin" path="res://scripts/UI/ui.gd" id="4_ilyw4"]
-[ext_resource type="Script" uid="uid://dfntagipgwmi0" path="res://scripts/WorldItem/world_item.gd" id="4_s5v2q"]
 [ext_resource type="PackedScene" uid="uid://clpfwcm5atdx" path="res://models/player2.blend" id="4_ubb0t"]
 [ext_resource type="PackedScene" uid="uid://cxo8dw76a4niu" path="res://models/player3.blend" id="5_otogl"]
+[ext_resource type="Script" uid="uid://cvu75o6f0tf1e" path="res://scripts/WorldItem/combinable_world_item.gd" id="6_3t8ye"]
 [ext_resource type="FontFile" uid="uid://xhyumybloes1" path="res://fonts/Oxanium/static/Oxanium-ExtraBold.ttf" id="6_jemfn"]
 [ext_resource type="Shader" uid="uid://77git02s74q8" path="res://shaders/texture_blend.gdshader" id="7_3t8ye"]
 [ext_resource type="PackedScene" uid="uid://do5x5jhgb3y4q" path="res://models/griddle.blend" id="7_v7ocj"]
@@ -52,22 +52,6 @@ albedo_color = Color(0.32321745, 0.57170653, 0.2719366, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ubb0t"]
 size = Vector3(50, 1, 50)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3t8ye"]
-render_priority = 0
-shader = ExtResource("7_3t8ye")
-shader_parameter/tex_default = ExtResource("8_m1pee")
-shader_parameter/tex_perfect = ExtResource("10_8vklm")
-shader_parameter/tex_overcooked = ExtResource("9_h5lsj")
-shader_parameter/cook_amount = 0.0
-shader_parameter/max_cook_amount = 0.0
-shader_parameter/default_cook_amount = 0.0
-shader_parameter/perfect_cook_amount = 0.0
-
-[sub_resource type="SphereMesh" id="SphereMesh_ilyw4"]
-material = SubResource("ShaderMaterial_3t8ye")
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_jemfn"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_flcco"]
 size = Vector3(2.326668, 1.6774292, 3.0905445)
@@ -2108,6 +2092,87 @@ shadow_mesh = SubResource("ArrayMesh_ryasw")
 [sub_resource type="BoxShape3D" id="BoxShape3D_r4eq0"]
 size = Vector3(2, 45.232147, 2)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3t8ye"]
+render_priority = 0
+shader = ExtResource("7_3t8ye")
+shader_parameter/tex_default = ExtResource("8_m1pee")
+shader_parameter/tex_perfect = ExtResource("10_8vklm")
+shader_parameter/tex_overcooked = ExtResource("9_h5lsj")
+shader_parameter/cook_amount = 0.0
+shader_parameter/max_cook_amount = 0.0
+shader_parameter/default_cook_amount = 0.0
+shader_parameter/perfect_cook_amount = 0.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_m1pee"]
+material = SubResource("ShaderMaterial_3t8ye")
+size = Vector3(0.25, 0.25, 0.25)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0c4qq"]
+size = Vector3(0.25, 0.25, 0.25)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_argpu"]
+size = Vector3(0.73083496, 0.34417725, 0.588501)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_h5lsj"]
+load_path = "res://.godot/imported/testing_tex_default.png-c87be436a1a4aa96d151ea9ac49574aa.s3tc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_8vklm"]
+load_path = "res://.godot/imported/testing_tex_overcooked.png-970244702d0f1a9b2939f8ffe5010859.s3tc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_hm10m"]
+load_path = "res://.godot/imported/testing_tex_cooked.png-2c5ec913a72ebcda3c227e8b2160e9d6.s3tc.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fo6fy"]
+render_priority = 0
+shader = ExtResource("7_3t8ye")
+shader_parameter/tex_default = SubResource("CompressedTexture2D_h5lsj")
+shader_parameter/tex_perfect = SubResource("CompressedTexture2D_hm10m")
+shader_parameter/tex_overcooked = SubResource("CompressedTexture2D_8vklm")
+shader_parameter/cook_amount = 0.0
+shader_parameter/max_cook_amount = 0.0
+shader_parameter/default_cook_amount = 0.0
+shader_parameter/perfect_cook_amount = 0.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_fgjjr"]
+material = SubResource("ShaderMaterial_fo6fy")
+size = Vector3(0.25, 0.25, 0.25)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8r2pq"]
+size = Vector3(0.25, 0.25, 0.25)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_utcpd"]
+size = Vector3(0.89471436, 0.65353394, 0.9885559)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_osml4"]
+load_path = "res://.godot/imported/testing_tex_default.png-c87be436a1a4aa96d151ea9ac49574aa.s3tc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_hu8eg"]
+load_path = "res://.godot/imported/testing_tex_overcooked.png-970244702d0f1a9b2939f8ffe5010859.s3tc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_os8tr"]
+load_path = "res://.godot/imported/testing_tex_cooked.png-2c5ec913a72ebcda3c227e8b2160e9d6.s3tc.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_crqjp"]
+render_priority = 0
+shader = ExtResource("7_3t8ye")
+shader_parameter/tex_default = SubResource("CompressedTexture2D_osml4")
+shader_parameter/tex_perfect = SubResource("CompressedTexture2D_os8tr")
+shader_parameter/tex_overcooked = SubResource("CompressedTexture2D_hu8eg")
+shader_parameter/cook_amount = 0.0
+shader_parameter/max_cook_amount = 0.0
+shader_parameter/default_cook_amount = 0.0
+shader_parameter/perfect_cook_amount = 0.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_l08ss"]
+material = SubResource("ShaderMaterial_crqjp")
+size = Vector3(0.25, 0.25, 0.25)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1jh4s"]
+size = Vector3(0.25, 0.25, 0.25)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jbl1i"]
+size = Vector3(0.73083496, 0.34417725, 0.588501)
+
 [node name="Gamer" type="Node3D" unique_id=405284247]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=453330040]
@@ -2152,20 +2217,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7141488, 0, 0)
 
 [node name="Spawnpoint5" type="Node3D" parent="Spawnpoints" unique_id=231261226]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.387509, 0, 0)
-
-[node name="WorldItem" type="RigidBody3D" parent="." unique_id=715344303 node_paths=PackedStringArray("mesh_instance")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0860467, 0)
-collision_layer = 5
-script = ExtResource("4_s5v2q")
-id = 0
-mesh_instance = NodePath("MeshInstance3D")
-metadata/_custom_type_script = "uid://dfntagipgwmi0"
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="WorldItem" unique_id=822034640]
-mesh = SubResource("SphereMesh_ilyw4")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldItem" unique_id=172134086]
-shape = SubResource("SphereShape3D_jemfn")
 
 [node name="UI" type="Control" parent="." unique_id=2105116814]
 layout_mode = 3
@@ -2724,6 +2775,72 @@ mesh = SubResource("ArrayMesh_134sa")
 [node name="CollisionShape3D47" type="CollisionShape3D" parent="restauraunt" unique_id=2140403934]
 transform = Transform3D(-0.6474398, 0, -6.32888e-07, 0, 0.04839503, 0, 6.32888e-07, 0, -0.6474398, 4.7213984, 1.2995648, 6.7975655)
 shape = SubResource("BoxShape3D_r4eq0")
+
+[node name="Item1" type="RigidBody3D" parent="." unique_id=1230805058 node_paths=PackedStringArray("mesh_instance")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.844411)
+collision_layer = 5
+script = ExtResource("6_3t8ye")
+id = 0
+item_name = "Item1"
+mesh_instance = NodePath("MeshInstance3D")
+metadata/_custom_type_script = "uid://cvu75o6f0tf1e"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Item1" unique_id=1710825512]
+mesh = SubResource("BoxMesh_m1pee")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Item1" unique_id=1770466369]
+shape = SubResource("BoxShape3D_0c4qq")
+
+[node name="CombineArea" type="Area3D" parent="Item1" unique_id=1164399146]
+collision_mask = 3
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Item1/CombineArea" unique_id=1171020189]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.007507324, 0.30169946, 0.0178833)
+shape = SubResource("BoxShape3D_argpu")
+
+[node name="Item2" type="RigidBody3D" parent="." unique_id=2068452951 node_paths=PackedStringArray("mesh_instance")]
+script = ExtResource("6_3t8ye")
+id = 1
+item_name = "Item2"
+mesh_instance = NodePath("MeshInstance3D")
+metadata/_custom_type_script = "uid://cvu75o6f0tf1e"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Item2" unique_id=1738705029]
+layers = 5
+mesh = SubResource("BoxMesh_fgjjr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Item2" unique_id=1270091232]
+shape = SubResource("BoxShape3D_8r2pq")
+
+[node name="CombineArea" type="Area3D" parent="Item2" unique_id=996011982]
+collision_mask = 3
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Item2/CombineArea" unique_id=766470559]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.07443237, 0.4563778, -0.05570984)
+shape = SubResource("BoxShape3D_utcpd")
+
+[node name="Item3" type="RigidBody3D" parent="." unique_id=1364769326 node_paths=PackedStringArray("mesh_instance")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.754418)
+collision_layer = 5
+script = ExtResource("6_3t8ye")
+id = 2
+item_name = "Item3"
+mesh_instance = NodePath("MeshInstance3D")
+metadata/_custom_type_script = "uid://cvu75o6f0tf1e"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Item3" unique_id=908252044]
+layers = 5
+mesh = SubResource("BoxMesh_l08ss")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Item3" unique_id=287922506]
+shape = SubResource("BoxShape3D_1jh4s")
+
+[node name="CombineArea" type="Area3D" parent="Item3" unique_id=371100268]
+collision_mask = 3
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Item3/CombineArea" unique_id=644148369]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.007507324, 0.30169946, 0.0178833)
+shape = SubResource("BoxShape3D_jbl1i")
 
 [connection signal="body_entered" from="Cooktop" to="Cooktop" method="_on_body_entered"]
 [connection signal="body_exited" from="Cooktop" to="Cooktop" method="_on_body_exited"]

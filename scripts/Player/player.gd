@@ -78,21 +78,30 @@ func rotate_camera():
 func put_held_item_in_socket():
 	if held_item and is_instance_valid(held_item) and held_item_socket:
 		held_item.freeze = true
-		held_item.get_node("CollisionShape3D").disabled = true
+		held_item.collision_mask = 0
+		held_item.collision_layer = 2
 		held_item.reparent(held_item_socket)
 		held_item.global_transform = held_item_socket.global_transform
 		held_item.pickup_allowd = false
+		held_item.held_by = self
 
 func drop_held_item():
-	if held_item and is_instance_valid(held_item):
-		held_item.freeze = false
-		var scene := get_tree().current_scene
-		if scene:
-			held_item.reparent(scene)
-		held_item.global_transform = held_item_socket.global_transform
-		held_item.pickup_allowd = true
-		held_item.get_node("CollisionShape3D").disabled = false
-		held_item = null
+	if not (held_item and is_instance_valid(held_item)):
+		return
+
+	var item := held_item
+	held_item = null
+
+	item.freeze = false
+	var scene := get_tree().current_scene
+	if scene:
+		item.reparent(scene)
+	item.global_transform = held_item_socket.global_transform
+	item.pickup_allowd = true
+	item.collision_mask = 1
+	item.set_collision_layer_value(1,true)
+	item.set_collision_layer_value(3,true)
+	item.held_by = null
 
 
 func _ready() -> void:

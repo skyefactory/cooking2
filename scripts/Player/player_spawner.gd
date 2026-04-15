@@ -72,3 +72,4 @@ func _on_peer_disconnected(id: int) -> void:
 	for node in get_children():
 		if node is Player and node.has_meta("ID") and node.get_meta("ID") == id:
 			node.queue_free()
+

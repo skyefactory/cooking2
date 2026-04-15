@@ -12,6 +12,8 @@ const MAX_COOK_AMOUNT: float = 200.0
 var material: ShaderMaterial = null
 var pickup_allowd: bool = true
 
+var held_by: Player = null
+
 # try and find the mesh's material
 func resolve_material() -> void:
 	if not mesh_instance: # try to find the mesh if it wasnt manually assigned
@@ -33,10 +35,12 @@ func resolve_material() -> void:
 			material = override_material as ShaderMaterial # we have an override, use it.
 	else:
 		material = null # if the active material isnt a shader material, we cant use it.
+		push_error("WorldItem material is not a ShaderMaterial: %s" % get_path())
 
 # pass the current cook vars to the shader.
 func sync_shader_values() -> void:
 	if not material:
+		push_error("WorldItem has no material to sync shader values to: %s" % get_path())
 		return
 
 	material.set_shader_parameter("cook_amount", cooked_amount)
@@ -75,7 +79,7 @@ func can_interact(interacting_player: Player) -> bool:
 
 func get_interaction_text(interacting_player: Player) -> String:
 	if pickup_allowd and not interacting_player.is_holding_item():
-		return "Press E to pick up %s" % item_name
+		return "Press E to pick up"
 	else:
 		return ""
 
