@@ -75,6 +75,11 @@ func rotate_camera():
 	if arm:
 		arm.rotation.x = camera.rotation.x
 
+func get_items_in_stack() -> Array:
+	if held_item and is_instance_valid(held_item) and held_item is CombinableWorldItem:
+		return (held_item as CombinableWorldItem).get_list()
+	return []
+
 func put_held_item_in_socket():
 	if held_item and is_instance_valid(held_item) and held_item_socket:
 		held_item.freeze = true
@@ -84,6 +89,9 @@ func put_held_item_in_socket():
 		held_item.global_transform = held_item_socket.global_transform
 		held_item.pickup_allowd = false
 		held_item.held_by = self
+		
+
+
 
 func drop_held_item():
 	if not (held_item and is_instance_valid(held_item)):
@@ -101,6 +109,7 @@ func drop_held_item():
 	item.collision_mask = 1
 	item.set_collision_layer_value(1,true)
 	item.set_collision_layer_value(3,true)
+	item.set_collision_layer_value(2,false)
 	item.held_by = null
 
 

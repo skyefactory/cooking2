@@ -27,7 +27,7 @@ func _ready() -> void:
 	resume_btn.pressed.connect(_on_resume_pressed)
 	manage_players_btn.pressed.connect(_on_manage_players_pressed)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Input.is_action_just_released("pause"):
 		if menu.visible:
 			_on_resume_pressed()
@@ -53,6 +53,6 @@ func _on_resume_pressed() -> void:
 func _on_manage_players_pressed() -> void:
 	pass
 
-func _on_interact_label(text: String, show: bool) -> void:
+func _on_interact_label(text: String, showText: bool) -> void:
 	$InteractionLabel.text = text
-	$InteractionLabel.visible = show
+	$InteractionLabel.visible = showText

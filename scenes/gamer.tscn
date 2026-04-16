@@ -50,7 +50,7 @@ size = Vector3(50, 1, 50)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ilyw4"]
 albedo_color = Color(0.32321745, 0.57170653, 0.2719366, 1)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_ubb0t"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_ollq4"]
 size = Vector3(50, 1, 50)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_flcco"]
@@ -2140,9 +2140,6 @@ size = Vector3(0.25, 0.25, 0.25)
 [sub_resource type="BoxShape3D" id="BoxShape3D_8r2pq"]
 size = Vector3(0.25, 0.25, 0.25)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_utcpd"]
-size = Vector3(0.89471436, 0.65353394, 0.9885559)
-
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_osml4"]
 load_path = "res://.godot/imported/testing_tex_default.png-c87be436a1a4aa96d151ea9ac49574aa.s3tc.ctex"
 
@@ -2190,9 +2187,9 @@ transform = Transform3D(2.6432915, 0, 0, 0, 1, 0, 0, 0, 2.5718765, 0, -0.6602998
 mesh = SubResource("BoxMesh_s5v2q")
 surface_material_override/0 = SubResource("StandardMaterial3D_ilyw4")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Level" unique_id=1928735653]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 2.5718765, 0, -0.6602998, -50.131706)
-shape = SubResource("BoxShape3D_ubb0t")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level" unique_id=278197691]
+transform = Transform3D(2.6432915, 0, 0, 0, 1, 0, 0, 0, 2.5718765, 0, -0.6602998, -50.131706)
+shape = SubResource("BoxShape3D_ollq4")
 
 [node name="PlayerSpawner" type="Node" parent="." unique_id=952340120 node_paths=PackedStringArray("spawn_points")]
 script = ExtResource("1_3gp36")
@@ -2799,6 +2796,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.007507324, 0.30169946, 0.01
 shape = SubResource("BoxShape3D_argpu")
 
 [node name="Item2" type="RigidBody3D" parent="." unique_id=2068452951 node_paths=PackedStringArray("mesh_instance")]
+collision_layer = 5
 script = ExtResource("6_3t8ye")
 id = 1
 item_name = "Item2"
@@ -2812,12 +2810,12 @@ mesh = SubResource("BoxMesh_fgjjr")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Item2" unique_id=1270091232]
 shape = SubResource("BoxShape3D_8r2pq")
 
-[node name="CombineArea" type="Area3D" parent="Item2" unique_id=996011982]
+[node name="CombineArea" type="Area3D" parent="Item2" unique_id=1506874459]
 collision_mask = 3
 
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="Item2/CombineArea" unique_id=766470559]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.07443237, 0.4563778, -0.05570984)
-shape = SubResource("BoxShape3D_utcpd")
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Item2/CombineArea" unique_id=150685482]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.007507324, 0.30169946, 0.0178833)
+shape = SubResource("BoxShape3D_argpu")
 
 [node name="Item3" type="RigidBody3D" parent="." unique_id=1364769326 node_paths=PackedStringArray("mesh_instance")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.754418)

@@ -296,7 +296,7 @@ func connection_timeout(delta: float) -> void:
 # update the debug status label with the current IP, port, and connection status
 func update_debug_status() -> void:
 	if status_lbl:
-		var peer_status = Network.peer.get_connection_status() if Network.peer else "No Peer"
+		var peer_status = str(Network.peer.get_connection_status()) if Network.peer else "No Peer"
 		status_lbl.text = "IP: %s, Port: %d Status: %s" % [ip, port, peer_status]
 
 func parse_port(raw: String) -> int:

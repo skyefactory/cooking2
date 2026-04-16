@@ -7,6 +7,7 @@ var previous: CombinableWorldItem = null
 @onready var combine_area: Area3D = $CombineArea
 
 var can_combine: bool = true
+var combine_pending: bool = false
 @export var stack_padding: float = 0.02
 
 func _ready() -> void:
@@ -15,17 +16,12 @@ func _ready() -> void:
 	super._ready() # run world item ready
 
 func _on_combine_area_body_entered(incoming: Node) -> void:
-	print("Body entered combine area: ", incoming)
 	if not can_combine or next != null: # if this node can't combine or already has a next item, we cant add more
 		return
 
 	if not incoming is CombinableWorldItem: # make sure the incoming item is a combinable world item
-		print("Incoming item is not a combinable world item.")
-		print("Incoming item type: ", incoming.get_class())
 		return
 
-	print("Incoming item: ", incoming)
-	print("Recipient item: ", self)
 	if incoming == null: # null guard
 		return
 	if incoming == self: # self guard
@@ -34,11 +30,30 @@ func _on_combine_area_body_entered(incoming: Node) -> void:
 		return
 	if incoming.held_by == null: # is the incoming item held by the player? We dont want to combine with items laying on the ground.
 		return
+	if combine_pending: # avoid queueing duplicate combines while waiting for deferred execution
+		return
 
-	attach_next(incoming)
+	# body_entered runs during physics; defer stack mutations/reparenting.
+	combine_pending = true
+	call_deferred("_deferred_attach_next", incoming)
 
 func _on_combine_area_body_exited(_body: Node) -> void:
 	pass
+
+func _deferred_attach_next(incoming: CombinableWorldItem) -> void:
+	combine_pending = false
+
+	if not is_instance_valid(incoming):
+		return
+	if incoming == self:
+		return
+	if next != null:
+		return
+	if incoming.previous != null:
+		return
+	if incoming.held_by == null:
+		return
+	attach_next(incoming)
 
 func attach_next(incoming: CombinableWorldItem) -> void:
 	if next != null: # make sure next is null
@@ -56,9 +71,11 @@ func attach_next(incoming: CombinableWorldItem) -> void:
 	angular_velocity = Vector3.ZERO
 	pickup_allowd = false
 
-	incoming.freeze = true # pause the physics of the incoming item.
+	incoming.freeze = false
 	incoming.linear_velocity = Vector3.ZERO # remove velocity
 	incoming.angular_velocity = Vector3.ZERO
+
+		
 
 	# Keep stacked items from pushing each other while preserving collision with the world.
 	add_collision_exception_with(incoming) # make sure this item doesn't collide with the incoming item
@@ -73,6 +90,8 @@ func attach_next(incoming: CombinableWorldItem) -> void:
 
 	next = incoming # set next
 	incoming.previous = self # set incoming previous
+	move_collision_shape_up()
+	
 
 func get_list() -> Array:
 	# first, find the head of the list
@@ -127,3 +146,10 @@ func _process(_delta: float) -> void:
 		next = null
 	
 	super._process(_delta) # run world item process
+
+func move_collision_shape_up() -> void:
+	if next:
+		var collision_shapes = get_children()
+		for child in collision_shapes:
+			if child is CollisionShape3D:
+				child.reparent(next)
